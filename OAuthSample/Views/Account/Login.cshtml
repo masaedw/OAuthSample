@@ -7,8 +7,12 @@
 
 <h2>Login</h2>
 
+@Model.Service
+
 <p>
-    <button>Twitter</button>
-    <button>Facebook</button>
-    <button>Mixi</button>
+@using (Html.BeginForm("Login")) {
+    <input type="submit" name="service" value="Twitter" />
+    <input type="submit" name="service" value="Facebook" />
+    <input type="submit" name="service" value="mixi" />
+}
 </p>

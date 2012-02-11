@@ -8,6 +8,7 @@ namespace OAuthSample.Controllers
 {
     public class AccountLoginModel
     {
+        public string Service { get; set; }
     }
 
     public class AccountController : Controller
@@ -22,7 +23,13 @@ namespace OAuthSample.Controllers
 
         public ActionResult Login()
         {
-            return View();
+            return View(new AccountLoginModel());
+        }
+
+        [HttpPost]
+        public ActionResult Login(string service)
+        {
+            return View(new AccountLoginModel { Service = service });
         }
     }
 }
