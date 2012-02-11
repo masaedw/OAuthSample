@@ -106,5 +106,11 @@ namespace OAuthSample.Controllers
 
             return RedirectToAction("login");
         }
+
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            return RedirectToAction("login");
+        }
     }
 }

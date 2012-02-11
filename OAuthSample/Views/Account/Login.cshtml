@@ -10,6 +10,8 @@
 @Session["accessToken"]
 @Session["accessSecret"]
 
+@Html.ActionLink("Logout", "Logout")
+
 <p>
 @using (Html.BeginForm("Login")) {
     <input type="submit" name="service" value="Twitter" />
