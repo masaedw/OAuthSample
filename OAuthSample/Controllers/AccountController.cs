@@ -6,6 +6,10 @@ using System.Web.Mvc;
 
 namespace OAuthSample.Controllers
 {
+    public class AccountLoginModel
+    {
+    }
+
     public class AccountController : Controller
     {
         //
@@ -16,5 +20,9 @@ namespace OAuthSample.Controllers
             return View();
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
     }
 }
