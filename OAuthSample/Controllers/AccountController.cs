@@ -33,6 +33,21 @@ namespace OAuthSample.Controllers
         [HttpPost]
         public ActionResult Login(string service)
         {
+            switch (service)
+            {
+                case "Twitter":
+                    return LoginWithTwitter();
+
+                case "Facebook":
+                    return LoginWithFacebook();
+
+                default:
+                    return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult LoginWithTwitter()
+        {
             var credentials = new OAuthCredentials
             {
                 Type = OAuthType.RequestToken,
@@ -58,6 +73,11 @@ namespace OAuthSample.Controllers
             var collection = HttpUtility.ParseQueryString(response.Content);
             Session["requestSecret"] = collection[1];
             return Redirect("https://twitter.com/oauth/authenticate?oauth_token=" + collection[0]);
+        }
+
+        public ActionResult LoginWithFacebook()
+        {
+            return View();
         }
 
         public ActionResult Callback(string oauth_token, string oauth_verifier)
