@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@Html.ActionLink("Logout", "Logout", "Account")
+
+@using (Html.BeginForm("Create"))
+{
+    <textarea rows="2" name="body"></textarea>
+    <input type="submit" "post" />
+}

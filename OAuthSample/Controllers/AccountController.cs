@@ -104,7 +104,7 @@ namespace OAuthSample.Controllers
             Session["accessToken"] = collection["oauth_token"];
             Session["accessSecret"] = collection["oauth_token_secret"];
 
-            return RedirectToAction("login");
+            return RedirectToAction("Index", "Tubuyaki");
         }
 
         public ActionResult Logout()
