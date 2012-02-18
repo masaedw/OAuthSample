@@ -6,8 +6,10 @@
 
 @Html.ActionLink("Logout", "Logout", "Account")
 
-@using (Html.BeginForm("Create"))
+@TempData["result"]
+
+@using (Html.BeginForm("Create", "Tubuyaki"))
 {
-    <textarea rows="2" name="body"></textarea>
+    <textarea rows="2" name="message"></textarea>
     <input type="submit" "post" />
 }
