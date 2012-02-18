@@ -1,28 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Hammock;
 using Hammock.Authentication.OAuth;
 using Hammock.Web;
+using OAuthSample.Models;
 
 namespace OAuthSample.Controllers
 {
     public class TubuyakiController : Controller
     {
-        public static string TwitterConsumerKey { get; set; }
-        public static string TwitterConsumerSecret { get; set; }
-        public static string ApplicationUrl { get; set; }
-
-        static TubuyakiController()
-        {
-            TwitterConsumerKey = ConfigurationManager.AppSettings["TwitterConsumerKey"];
-            TwitterConsumerSecret = ConfigurationManager.AppSettings["TwitterConsumerSecret"];
-            ApplicationUrl = ConfigurationManager.AppSettings["ApplicationUrl"];
-        }
-
         //
         // GET: /Tubuyaki/
 
@@ -44,8 +33,8 @@ namespace OAuthSample.Controllers
             };
 
             var credentials = OAuthCredentials.ForProtectedResource(
-                TwitterConsumerKey,
-                TwitterConsumerSecret,
+                Config.TwitterConsumerKey,
+                Config.TwitterConsumerSecret,
                 token,
                 tokenSecret);
             credentials.ParameterHandling = OAuthParameterHandling.UrlOrPostParameters;

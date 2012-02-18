@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Hammock;
 using Hammock.Authentication.OAuth;
 using Hammock.Web;
+using OAuthSample.Models;
 
 namespace OAuthSample.Controllers
 {
@@ -17,17 +17,6 @@ namespace OAuthSample.Controllers
 
     public class AccountController : Controller
     {
-        public static string TwitterConsumerKey { get; set; }
-        public static string TwitterConsumerSecret { get; set; }
-        public static string ApplicationUrl { get; set; }
-
-        static AccountController()
-        {
-            TwitterConsumerKey = ConfigurationManager.AppSettings["TwitterConsumerKey"];
-            TwitterConsumerSecret = ConfigurationManager.AppSettings["TwitterConsumerSecret"];
-            ApplicationUrl = ConfigurationManager.AppSettings["ApplicationUrl"];
-        }
-
         //
         // GET: /Account/
 
@@ -49,9 +38,9 @@ namespace OAuthSample.Controllers
                 Type = OAuthType.RequestToken,
                 SignatureMethod = OAuthSignatureMethod.HmacSha1,
                 ParameterHandling = OAuthParameterHandling.HttpAuthorizationHeader,
-                ConsumerKey = TwitterConsumerKey,
-                ConsumerSecret = TwitterConsumerSecret,
-                CallbackUrl = ApplicationUrl + "/Account/Callback",
+                ConsumerKey = Config.TwitterConsumerKey,
+                ConsumerSecret = Config.TwitterConsumerSecret,
+                CallbackUrl = Config.ApplicationUrl + "/Account/Callback",
             };
 
             var client = new RestClient
@@ -80,8 +69,8 @@ namespace OAuthSample.Controllers
                 Type = OAuthType.AccessToken,
                 SignatureMethod = OAuthSignatureMethod.HmacSha1,
                 ParameterHandling = OAuthParameterHandling.HttpAuthorizationHeader,
-                ConsumerKey = TwitterConsumerKey,
-                ConsumerSecret = TwitterConsumerSecret,
+                ConsumerKey = Config.TwitterConsumerKey,
+                ConsumerSecret = Config.TwitterConsumerSecret,
                 Token = oauth_token,
                 TokenSecret = requestSecret,
                 Verifier = oauth_verifier,
