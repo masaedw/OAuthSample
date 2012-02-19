@@ -138,6 +138,7 @@ namespace OAuthSample.Controllers
         {
             if (String.IsNullOrEmpty(code))
             {
+                // TempData is equivalent to flash of rails.
                 TempData["message"] = "認証に失敗しました";
                 return RedirectToAction("Login");
             }
