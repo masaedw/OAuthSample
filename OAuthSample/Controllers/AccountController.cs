@@ -111,6 +111,12 @@ namespace OAuthSample.Controllers
             return RedirectToAction("Index", "Tubuyaki");
         }
 
+        #region Facebook
+
+        // This is an implementation of facebook authentication.
+        // The protocol documented in
+        // https://developers.facebook.com/docs/authentication/
+
         public ActionResult LoginWithFacebook()
         {
             var clientId = Config.FacebookAppId;
@@ -131,9 +137,37 @@ namespace OAuthSample.Controllers
                 TempData["message"] = "認証に失敗しました";
                 return RedirectToAction("Login");
             }
-            TempData["message"] = "認証に成功しました" + code;
-            return RedirectToAction("Login");
+
+            var client = new RestClient
+            {
+                Authority = "https://graph.facebook.com/oauth/",
+            };
+
+            var request = new RestRequest
+            {
+                Path = "access_token",
+            };
+
+            request.AddParameter("client_id", Config.FacebookAppId);
+            request.AddParameter("redirect_uri", Config.ApplicationUrl + "/Account/CallbackFacebook");
+            request.AddParameter("client_secret", Config.FacebookAppSecret);
+            request.AddParameter("code", code);
+
+            var response = client.Request(request);
+
+            // response contains access_token and expires
+            var result = HttpUtility.ParseQueryString(response.Content);
+
+            // to handle expired access tokens, see the blog
+            // https://developers.facebook.com/blog/post/500/
+
+            Session["access_token"] = result["access_token"];
+            Session["expires"] = result["expires"];
+
+            return RedirectToAction("Index", "Tubuyaki");
         }
+
+        #endregion
 
         public ActionResult Logout()
         {
