@@ -75,11 +75,6 @@ namespace OAuthSample.Controllers
             return Redirect("https://twitter.com/oauth/authenticate?oauth_token=" + collection[0]);
         }
 
-        public ActionResult LoginWithFacebook()
-        {
-            return View();
-        }
-
         public ActionResult Callback(string oauth_token, string oauth_verifier)
         {
             var requestSecret = (string)Session["requestSecret"];
@@ -114,6 +109,30 @@ namespace OAuthSample.Controllers
             Session["accessSecret"] = collection["oauth_token_secret"];
 
             return RedirectToAction("Index", "Tubuyaki");
+        }
+
+        public ActionResult LoginWithFacebook()
+        {
+            var clientId = Config.FacebookAppId;
+            var callback = Config.ApplicationUrl + "/Account/CallbackFacebook";
+
+            // offline_access はアクセストークンを永続化したい場合に必要となる
+            // これがない場合は使い切りのトークンしか貰えない
+            var requestUrl = String.Format("https://graph.facebook.com/oauth/authorize?client_id={0}&redirect_uri={1}&scope=offline_access,publish_stream",
+                clientId,
+                callback);
+            return Redirect(requestUrl);
+        }
+
+        public ActionResult CallbackFacebook(string code)
+        {
+            if (String.IsNullOrEmpty(code))
+            {
+                TempData["message"] = "認証に失敗しました";
+                return RedirectToAction("Login");
+            }
+            TempData["message"] = "認証に成功しました" + code;
+            return RedirectToAction("Login");
         }
 
         public ActionResult Logout()
