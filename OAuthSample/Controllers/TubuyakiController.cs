@@ -23,33 +23,8 @@ namespace OAuthSample.Controllers
         [HttpPost]
         public ActionResult Create(string message)
         {
-            switch ((string)Session["service"])
-            {
-                case "Facebook":
-                    return CreateFacebook(message);
-
-                case "Twitter":
-                    return CreateTwitter(message);
-
-                default:
-                    return RedirectToAction("Index");
-            }
-        }
-
-        public ActionResult CreateFacebook(string message)
-        {
-            var accessToken = (string)Session["access_token"];
-            var result = Facebook.CreateLoginUsersStatusMessage(accessToken, message);
-            TempData["result"] = result;
-            return RedirectToAction("Index");
-        }
-
-        public ActionResult CreateTwitter(string message)
-        {
-            var token = (string)Session["accessToken"];
-            var tokenSecret = (string)Session["accessSecret"];
-            var result = Twitter.UpdateStatus(token, tokenSecret, message);
-            TempData["result"] = result;
+            var user = (User)Session["user"];
+            TempData["result"] = user.Tubuyaki(message);
             return RedirectToAction("Index");
         }
     }

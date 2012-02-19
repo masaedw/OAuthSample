@@ -109,9 +109,13 @@ namespace OAuthSample.Controllers
             var response = client.Request(request);
             var collection = HttpUtility.ParseQueryString(response.Content);
 
-            Session["accessToken"] = collection["oauth_token"];
-            Session["accessSecret"] = collection["oauth_token_secret"];
-            Session["service"] = "Twitter";
+            var user = new User
+            {
+                TwitterAccessToken = collection["oauth_token"],
+                TwitterAccessTokenSecret = collection["oauth_token_secret"],
+            };
+
+            Session["user"] = user;
 
             return RedirectToAction("Index", "Tubuyaki");
         }
@@ -170,10 +174,13 @@ namespace OAuthSample.Controllers
             // https://developers.facebook.com/blog/post/500/
 
             var accessToken = result["access_token"];
-            Session["access_token"] = accessToken;
-            Session["expires"] = result["expires"];
-            Session["user"] = Facebook.GetUserInformation(accessToken);
-            Session["service"] = "Facebook";
+            var user = new User
+            {
+                FacebookAccessToken = accessToken,
+                FacebookUser = Facebook.GetUserInformation(accessToken),
+            };
+
+            Session["user"] = user;
 
             return RedirectToAction("Index", "Tubuyaki");
         }
