@@ -23,6 +23,15 @@ namespace OAuthSample.Controllers
         [HttpPost]
         public ActionResult Create(string message)
         {
+            var accessToken = (string)Session["access_token"];
+            var result = Facebook.CreateLoginUsersStatusMessage(accessToken, message);
+            TempData["result"] = result;
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult CreateTwitter(string message)
+        {
             var token = (string)Session["accessToken"];
             var tokenSecret = (string)Session["accessSecret"];
 

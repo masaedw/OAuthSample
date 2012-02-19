@@ -24,5 +24,27 @@ namespace OAuthSample.Models
             var response = client.Request(request);
             return DynamicJson.Parse(response.Content);
         }
+
+        /// <summary>
+        /// ログインユーザのステータスメッセージを更新します
+        /// </summary>
+        /// <param name="accessToken"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static dynamic CreateLoginUsersStatusMessage(string accessToken, string message)
+        {
+            // see http://developers.facebook.com/docs/reference/api/user/
+
+            var client = new RestClient { Authority = "https://graph.facebook.com/" };
+            var request = new RestRequest
+            {
+                Path = "me/feed",
+                Method = Hammock.Web.WebMethod.Post,
+            };
+            request.AddParameter("access_token", accessToken);
+            request.AddParameter("message", message);
+            var response = client.Request(request);
+            return DynamicJson.Parse(response.Content);
+        }
     }
 }
