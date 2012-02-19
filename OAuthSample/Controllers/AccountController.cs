@@ -114,7 +114,7 @@ namespace OAuthSample.Controllers
         public ActionResult LoginWithFacebook()
         {
             var clientId = Config.FacebookAppId;
-            var callback = Config.ApplicationUrl + "/Account/CallbackFacebook";
+            var callback = HttpUtility.UrlEncode(Config.ApplicationUrl + "/Account/CallbackFacebook");
 
             // offline_access はアクセストークンを永続化したい場合に必要となる
             // これがない場合は使い切りのトークンしか貰えない
