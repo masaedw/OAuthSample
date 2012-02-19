@@ -23,43 +23,33 @@ namespace OAuthSample.Controllers
         [HttpPost]
         public ActionResult Create(string message)
         {
+            switch ((string)Session["service"])
+            {
+                case "Facebook":
+                    return CreateFacebook(message);
+
+                case "Twitter":
+                    return CreateTwitter(message);
+
+                default:
+                    return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult CreateFacebook(string message)
+        {
             var accessToken = (string)Session["access_token"];
             var result = Facebook.CreateLoginUsersStatusMessage(accessToken, message);
             TempData["result"] = result;
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
         public ActionResult CreateTwitter(string message)
         {
             var token = (string)Session["accessToken"];
             var tokenSecret = (string)Session["accessSecret"];
-
-            var client = new RestClient
-            {
-                Authority = "http://api.twitter.com",
-                UserAgent = "OAuthSample",
-            };
-
-            var credentials = OAuthCredentials.ForProtectedResource(
-                Config.TwitterConsumerKey,
-                Config.TwitterConsumerSecret,
-                token,
-                tokenSecret);
-            credentials.ParameterHandling = OAuthParameterHandling.UrlOrPostParameters;
-
-            var request = new RestRequest
-            {
-                Path = "statuses/update.json",
-                Method = WebMethod.Post,
-                Credentials = credentials,
-            };
-
-            request.AddParameter("status", message);
-
-            var response = client.Request(request);
-            TempData["result"] = response.Content;
-
+            var result = Twitter.UpdateStatus(token, tokenSecret, message);
+            TempData["result"] = result;
             return RedirectToAction("Index");
         }
     }

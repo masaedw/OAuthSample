@@ -111,6 +111,7 @@ namespace OAuthSample.Controllers
 
             Session["accessToken"] = collection["oauth_token"];
             Session["accessSecret"] = collection["oauth_token_secret"];
+            Session["service"] = "Twitter";
 
             return RedirectToAction("Index", "Tubuyaki");
         }
@@ -172,6 +173,7 @@ namespace OAuthSample.Controllers
             Session["access_token"] = accessToken;
             Session["expires"] = result["expires"];
             Session["user"] = Facebook.GetUserInformation(accessToken);
+            Session["service"] = "Facebook";
 
             return RedirectToAction("Index", "Tubuyaki");
         }
