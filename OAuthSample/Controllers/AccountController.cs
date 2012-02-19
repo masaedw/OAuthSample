@@ -33,6 +33,8 @@ namespace OAuthSample.Controllers
         [HttpPost]
         public ActionResult Login(string service)
         {
+            // To delete this dispatch method, see this blog post:
+            // http://www.dotnetcurry.com/ShowArticle.aspx?ID=724
             switch (service)
             {
                 case "Twitter":
