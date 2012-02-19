@@ -20,6 +20,11 @@ namespace OAuthSample.Models
         public string FacebookAccessToken { get; set; }
         public dynamic FacebookUser { get; set; }
 
+        public string MixiAccessToken { get; set; }
+        public DateTime MixiExpires { get; set; }
+        public string MixiRefreshToken { get; set; }
+        public dynamic MixiUser { get; set; }
+
         public TubuyakiResult Tubuyaki(string message)
         {
             var tr = new TubuyakiResult();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Codeplex.Data;
 using Hammock;
 using Hammock.Authentication.OAuth;
 using Hammock.Web;
@@ -43,8 +44,11 @@ namespace OAuthSample.Controllers
                 case "Facebook":
                     return LoginWithFacebook();
 
+                case "mixi":
+                    return LoginWithMixi();
+
                 default:
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Login");
             }
         }
 
@@ -182,6 +186,56 @@ namespace OAuthSample.Controllers
 
             user.FacebookAccessToken = accessToken;
             user.FacebookUser = Facebook.GetUserInformation(accessToken);
+
+            Session["user"] = user;
+
+            return RedirectToAction("Index", "Tubuyaki");
+        }
+
+        #endregion
+
+        #region Mixi
+
+        public ActionResult LoginWithMixi()
+        {
+            var consumerKey = Config.MixiConsumerKey;
+            // ユーザプロファイル情報読み込みと、ボイスへの書き込み権限を求める
+            var scope = HttpUtility.UrlEncode("r_profile w_voice");
+
+            var requestUrl = String.Format("https://mixi.jp/connect_authorize.pl?client_id={0}&scope={1}&response_type=code&display=pc",
+                consumerKey,
+                scope);
+            return Redirect(requestUrl);
+        }
+
+        public ActionResult CallbackMixi(string code)
+        {
+            var client = new RestClient
+            {
+                Authority = "https://secure.mixi-platform.com",
+            };
+
+            var request = new RestRequest
+            {
+                Path = "2/token",
+                Method = WebMethod.Post,
+            };
+            request.AddParameter("grant_type", "authorization_code");
+            request.AddParameter("client_id", Config.MixiConsumerKey);
+            request.AddParameter("client_secret", Config.MixiConsumerSecret);
+            request.AddParameter("code", code);
+            // redirect_uri needs to be same as redirect url of mixi's application configuration
+            request.AddParameter("redirect_uri", "http://twi-ll.timedia.co.jp/Account/CallbackMixi");
+
+            var response = client.Request(request);
+
+            var result = DynamicJson.Parse(response.Content);
+
+            var user = (User)Session["user"] ?? new User();
+
+            user.MixiAccessToken = result.access_token;
+            user.MixiExpires = DateTime.Now.AddSeconds((double)result.expires_in);
+            user.MixiRefreshToken = result.refresh_token;
 
             Session["user"] = user;
 
