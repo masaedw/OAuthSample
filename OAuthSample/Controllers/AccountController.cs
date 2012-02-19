@@ -46,6 +46,8 @@ namespace OAuthSample.Controllers
             }
         }
 
+        #region Twitter
+
         public ActionResult LoginWithTwitter()
         {
             var credentials = new OAuthCredentials
@@ -110,6 +112,8 @@ namespace OAuthSample.Controllers
 
             return RedirectToAction("Index", "Tubuyaki");
         }
+
+        #endregion
 
         #region Facebook
 
