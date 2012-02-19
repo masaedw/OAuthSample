@@ -19,3 +19,5 @@
     <textarea cols="50" rows="2" name="message"></textarea>
     <input type="submit" value="post" />
 }
+
+@Html.Partial("LoginButtons", Session["user"])

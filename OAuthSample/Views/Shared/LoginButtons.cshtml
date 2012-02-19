@@ -1,0 +1,15 @@
+﻿@model OAuthSample.Models.User
+<div class="login">
+@using (Html.BeginForm("Login", "Account"))
+{
+    if (Model.TwitterUser == null)
+    {
+        <input type="submit" name="service" value="Twitter" />
+    }
+    if (Model.FacebookUser == null)
+    {
+        <input type="submit" name="service" value="Facebook" />
+    }
+    <input type="submit" name="service" value="mixi" />
+}
+</div>

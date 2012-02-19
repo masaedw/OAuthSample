@@ -13,9 +13,5 @@
 @Session["accessSecret"]
 
 <p>
-@using (Html.BeginForm("Login")) {
-    <input type="submit" name="service" value="Twitter" />
-    <input type="submit" name="service" value="Facebook" />
-    <input type="submit" name="service" value="mixi" />
-}
+@Html.Partial("LoginButtons", Session["user"] ?? new OAuthSample.Models.User())
 </p>

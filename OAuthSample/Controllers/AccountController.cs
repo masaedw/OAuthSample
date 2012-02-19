@@ -113,12 +113,11 @@ namespace OAuthSample.Controllers
             var tokenSecret = collection["oauth_token_secret"];
             var info = Twitter.GetUserInformation(token, tokenSecret);
 
-            var user = new User
-            {
-                TwitterAccessToken = token,
-                TwitterAccessTokenSecret = tokenSecret,
-                TwitterUser = info,
-            };
+            var user = (User)Session["user"] ?? new User();
+
+            user.TwitterAccessToken = token;
+            user.TwitterAccessTokenSecret = tokenSecret;
+            user.TwitterUser = info;
 
             Session["user"] = user;
 
@@ -179,11 +178,10 @@ namespace OAuthSample.Controllers
             // https://developers.facebook.com/blog/post/500/
 
             var accessToken = result["access_token"];
-            var user = new User
-            {
-                FacebookAccessToken = accessToken,
-                FacebookUser = Facebook.GetUserInformation(accessToken),
-            };
+            var user = (User)Session["user"] ?? new User();
+
+            user.FacebookAccessToken = accessToken;
+            user.FacebookUser = Facebook.GetUserInformation(accessToken);
 
             Session["user"] = user;
 
