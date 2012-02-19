@@ -11,6 +11,31 @@ namespace OAuthSample.Models
 {
     public class Twitter
     {
+        public static dynamic GetUserInformation(string accessToken, string accessTokenSecret)
+        {
+            var client = new RestClient
+            {
+                Authority = "http://api.twitter.com",
+                UserAgent = "OAuthSample",
+            };
+
+            var credentials = OAuthCredentials.ForProtectedResource(
+                Config.TwitterConsumerKey,
+                Config.TwitterConsumerSecret,
+                accessToken,
+                accessTokenSecret);
+            credentials.ParameterHandling = OAuthParameterHandling.UrlOrPostParameters;
+
+            var request = new RestRequest
+            {
+                Path = "1/account/verify_credentials.json",
+                Credentials = credentials,
+            };
+
+            var response = client.Request(request);
+            return DynamicJson.Parse(response.Content);
+        }
+
         /// <summary>
         /// ステータスを更新します
         /// </summary>

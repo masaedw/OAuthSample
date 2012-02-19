@@ -109,10 +109,15 @@ namespace OAuthSample.Controllers
             var response = client.Request(request);
             var collection = HttpUtility.ParseQueryString(response.Content);
 
+            var token = collection["oauth_token"];
+            var tokenSecret = collection["oauth_token_secret"];
+            var info = Twitter.GetUserInformation(token, tokenSecret);
+
             var user = new User
             {
-                TwitterAccessToken = collection["oauth_token"],
-                TwitterAccessTokenSecret = collection["oauth_token_secret"],
+                TwitterAccessToken = token,
+                TwitterAccessTokenSecret = tokenSecret,
+                TwitterUser = info,
             };
 
             Session["user"] = user;

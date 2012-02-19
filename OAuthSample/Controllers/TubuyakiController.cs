@@ -17,7 +17,7 @@ namespace OAuthSample.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View(TempData["result"] ?? new TubuyakiResult());
         }
 
         [HttpPost]

@@ -22,11 +22,19 @@ namespace OAuthSample.Models
 
         public TubuyakiResult Tubuyaki(string message)
         {
-            return new TubuyakiResult
+            var tr = new TubuyakiResult();
+
+            if (TwitterUser != null)
             {
-                TwitterResult = Twitter.UpdateStatus(TwitterAccessToken, TwitterAccessTokenSecret, message),
-                FacebookResult = Facebook.CreateLoginUsersStatusMessage(FacebookAccessToken, message),
-            };
+                tr.TwitterResult = Twitter.UpdateStatus(TwitterAccessToken, TwitterAccessTokenSecret, message);
+            }
+
+            if (FacebookUser != null)
+            {
+                tr.FacebookResult = Facebook.CreateLoginUsersStatusMessage(FacebookAccessToken, message);
+            }
+
+            return tr;
         }
     }
 }
