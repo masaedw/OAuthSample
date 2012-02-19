@@ -106,6 +106,7 @@
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\Facebook.cs" />
     <Compile Include="Models\Twitter.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
