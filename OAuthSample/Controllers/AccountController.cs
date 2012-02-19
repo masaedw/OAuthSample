@@ -168,8 +168,10 @@ namespace OAuthSample.Controllers
             // to handle expired access tokens, see the blog
             // https://developers.facebook.com/blog/post/500/
 
-            Session["access_token"] = result["access_token"];
+            var accessToken = result["access_token"];
+            Session["access_token"] = accessToken;
             Session["expires"] = result["expires"];
+            Session["user"] = Facebook.GetUserInformation(accessToken);
 
             return RedirectToAction("Index", "Tubuyaki");
         }
